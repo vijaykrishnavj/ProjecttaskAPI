@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        *{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+.navbar{
+    height: 65px;
+    /* margin-bottom: 10px; */
+    background-color: grey;
+    display: flex;
+    justify-content:space-evenly;
+    border-radius: 8px;
+    
+}
+
+.nav-links{
+    font-size: 1rem;
+    display: flex;
+    align-items:center;    
+}
+.nav-links li{
+    list-style: none;
+}
+.nav-links li a{
+    text-decoration: none;
+    color: sandybrown;
+    margin: 10px;
+    background-color: rgb(77, 71, 225);
+    border-radius: 10px;
+    padding: 5px;
+    transition: background-color 0.3s,
+    color 0.3s;
+}
+.nav-links li a:hover{
+    background-color: rgb(107, 233, 221);
+    color: rgb(221, 76, 65);
+    box-shadow: 5px 5px 10px rgba(124,   215, 206, 0.982);
+}
+
+
+      /* ul {
+        display: flex;
+        list-style: none;
+        justify-content: space-around;
+        background-color: blueviolet;
+        padding: 20px;
+        color: white;
+      } */
+      img {
+        border-radius: 10px;
+        width: 100%;
+        height: 120px;
+      }
+      .outer-div {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 180px;
+      }
+      .card {
+        background-color: lavender;
+        width: 200px;
+        height: 350px;
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+        overflow: hidden;
+        border: 4px solid rgb(228, 38, 180);
+        border-radius: 20px;
+      }
+      h4 {
+        border: 1px solid rgb(201, 84, 230);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 8px;
+      }
+      input {
+        width: 60%;
+        padding: 20px;
+        border-radius: 20px;
+        margin: auto;
+        display: block;
+      }
+      .btn{
+       padding: 20px;
+        border-radius: 10px;
+
+
+      }
+      .searchbtn{
+        padding: 10px;
+        display: flex;
+        background-color: lavender;
+       
+      }
+
+      .searchbtn2{
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        background-color: lavender;
+       
+      }
+      .btn1{
+    
+       padding: 20px;
+        border-radius: 10px;
+
+      } 
+      .recipe {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        p{
+            font-size: 35px;
+            color: red;
+            padding: 50px;
+        }
+
+        .btns1{
+          display: flex;
+          justify-content: center;
+          border: none;
+
+        }
+
+        .btn2{
+          margin: 3px;
+          padding: 20px;
+          background-color: blue;
+          border-radius: 10px;
+          color: white ;
+        }
+
+    </style>
+  </head>
+  <body>
+
+    <header>
+        <div class="navbar">
+            <ul class="nav-links">
+                <li><a href="./Home.html">HOME</a></li>
+                <li><a href="./About.html">ABOUT</a></li>
+                <li><a href="./Services.html">SERVICES</a></li>
+                <li><a href="./Contactus.html">CONTACT</a></li>
+                <!-- <li><a href="#">LOGIN</a></li> -->
+            </ul>
+        </div>
+    </header>
+  
+<div class="searchbtn">
+    <input
+      type="text"
+      placeholder="Search your items........."
+      value=""
+      id="search"
+      onchange="HandleClick(event)"
+    
+    />
+    <button class="btn" onclick="HandleClick2()">search</button>
+</div>
+
+
+
+
+    <!-- checkboxes -->
+    <div class="searchbtn2">
+        <label>
+            <input type="checkbox" id="rating3"> Rating below 3
+        </label>
+        <label>
+            <input type="checkbox" id="rating4"> Rating above 4
+        </label>
+        <label>
+            <input type="checkbox" id="rating45"> Rating above 4.5
+        </label>
+        <button class="btn1" id="submitBtn">Filter</button>
+    </div>
+
+
+
+
+    <div class="outer-div" id="div"></div>
+
+<!-- pagination -->
+
+<div class="btns1">
+  <button class="btn2" onclick="showData(0,8)">1</button>
+  <button class="btn2" onclick="showData(8,16)">2</button>
+  <button class="btn2" onclick="showData(16,24)">3</button>
+  <button class="btn2" onclick="showData(24,32)">4</button>
+  <button class="btn2" onclick="showData(32,41)">5</button>
+  <button class="btn2" onclick="showData()">Reset</button>
+</div>
+
+<!-- <div class="btns1">
+  <button class="btn2" onclick="showData(1)">1</button>
+  <button class="btn2" onclick="showData(2)">2</button>
+  <button class="btn2" onclick="showData(3)">3</button>
+  <button class="btn2" onclick="showData(4)">4</button>
+  <button class="btn2" onclick="showData(5)">5</button>
+  <button class="btn2" onclick="showData()">Reset</button>
+</div> -->
+
+
+    <script>
+
+// checkboxes
+window.onload = function (e) {
+        DisplayRecipes(); // Initial load
+    };
+
+    function DisplayRecipes(filterFn = null) {
+        let div = document.getElementById("div");
+        div.innerHTML = "";
+        fetch("https://dummyjson.com/recipes?limit=50&skip=10")
+            .then((response) => response.json())
+            .then((data) => {
+                let recipes = data.recipes;
+
+                if (filterFn) {
+                    recipes = recipes.filter(filterFn); // Apply filter function if provided
+                }
+
+                if (recipes.length === 0) {
+                    div.innerHTML = "<p>No recipes found with the selected Rating</p>";
+                } else {
+                    recipes.map((i) => {
+                        div.innerHTML += `
+                        <div class="card">
+                            <img src="${i.image}" alt="${i.name}" />
+                            <h4>${i.name}</h4>
+                            <h4>Rating: ${i.rating}</h4>
+                            <h4>Reviews: ${i.reviewCount}</h4>
+                        </div>`;
+                    });
+                }
+            })
+            .catch((error) => console.error("Error recipes:", error));
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+
+        const rating3 = document.getElementById("rating3").checked;
+
+        
+        const rating4 = document.getElementById("rating4").checked;
+        const rating45 = document.getElementById("rating45").checked;
+
+        // Create a filter function based on the checkboxes
+        let filterFn = null;
+        if (rating3) {
+            filterFn = (recipe) => recipe.rating <= 3;
+            }
+        if (rating4) {
+            filterFn = (recipe) => recipe.rating > 4;
+        }
+        if (rating45) {
+            filterFn = (recipe) => recipe.rating > 4.5;
+        }
+
+        DisplayRecipes(filterFn); // Fetch and filter recipes
+    });
+
+
+
+      console.log("Cuurent page:", document.location.href);
+
+
+
+      function showData(start,end){
+      // window.onload = function (e) {
+        let div = document.getElementById("div");
+        div.innerHTML = "";
+        let api = fetch("https://dummyjson.com/recipes?limit=50&skip=10");
+        api.then((response) => {
+          let changedData = response.json();
+          changedData.then((result) => {
+            let result1= result.recipes.slice(start,end)
+            result1.map((i) => {
+              div.innerHTML += `
+            <div class="card">
+            <img src="${i.image}"/>
+           <h4>${i.name}</h4>
+            <h4>${i.rating}</h4>
+            <h4>${i.reviewCount}</h4>
+            </div>
+            `;
+          });
+          });
+        });
+      };
+      // showData();
+
+
+
+      var newStr = "";
+      function HandleClick(e) {
+        let input = e.target.value;
+        newStr = input;
+      }
+      function HandleClick2() {
+        let div = document.getElementById("div");
+        div.innerHTML = "";
+        let api = fetch("https://dummyjson.com/recipes?limit=50&skip=10");
+        api.then((response) => {
+          let changedData = response.json();
+          changedData.then((result) => {
+            let result1= result.recipes
+
+              result1.map((i) => {
+                  if (i.name == newStr) {
+                div.innerHTML += `
+            <div class="card">
+            <img src="${i.image}"/>
+           <h4>${i.name}</h4>
+            <h4>${i.rating}</h4>
+            <h4>${i.reviewCount}</h4>
+            </div>
+            `;
+              }
+            });
+          });
+        });
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+  </body>
+</html>

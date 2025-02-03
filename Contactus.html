@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+           *{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+.navbar{
+    height: 65px;
+    margin-bottom: 10px;
+    background-color: grey;
+    display: flex;
+    justify-content:space-evenly;
+    border-radius: 8px;
+    
+}
+
+.nav-links{
+    font-size: 1rem;
+    display: flex;
+    align-items:center;    
+}
+.nav-links li{
+    list-style: none;
+}
+.nav-links li a{
+    text-decoration: none;
+    color: sandybrown;
+    margin: 10px;
+    background-color: rgb(77, 71, 225);
+    border-radius: 10px;
+    padding: 5px;
+    transition: background-color 0.3s,
+    color 0.3s;
+}
+.nav-links li a:hover{
+    background-color: rgb(107, 233, 221);
+    color: rgb(221, 76, 65);
+    box-shadow: 5px 5px 10px rgba(124,   215, 206, 0.982);
+}
+
+      #contact.active {
+        color: rgb(212, 146, 88);
+        background-color: rgb(12, 11, 11);
+      } 
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+          <ul class="nav-links">
+              <li><a href="./Home.html">HOME</a></li>
+              <li><a href="./About.html">ABOUT</a></li>
+              <li><a href="./Services.html">SERVICES</a></li>
+              <li><a href="./Contactus.html" id="contact">CONTACT</a></li>
+              <!-- <li><a href="#">LOGIN</a></li> -->
+
+
+          </ul>
+      </div>
+  </header>
+
+
+
+    THIS IS CONTACT US PAGE
+    <script>
+         let page = document.getElementById("contact");
+      if (document.location.href.includes("Contactus")) {
+        page.setAttribute("class", "active");
+      }
+    </script>
+  </body>
+</html>
